@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | NutriPulse AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="min-h-screen flex items-center justify-center px-4">
+    <div class="max-w-md w-full glass-card rounded-2xl p-8 shadow-2xl">
+        <div class="text-center mb-8">
+            <div class="inline-block px-3 py-1 mb-2 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+                Secure Access
+            </div>
+            <h1 class="text-3xl font-extrabold text-white">Welcome to <span class="text-emerald-400">NutriPulse</span></h1>
+            <p class="text-slate-400 text-sm mt-1">Sign in to access your clinical diet assistant</p>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-4">
+            <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">Email Address</label>
+                <input type="email" id="email" required placeholder="user@example.com" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-emerald-500">
+            </div>
+            <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">Password</label>
+                <input type="password" id="password" required placeholder="••••••••" class="w-full bg-slate-900/50 border border-slate-700 rounded-xl p-3 text-white text-sm focus:outline-none focus:border-emerald-500">
+            </div>
+            <button type="submit" class="glow-button w-full text-white font-semibold py-3 px-4 rounded-xl text-sm mt-2">
+                Sign In to Dashboard
+            </button>
+        </form>
+    </div>
+
+    <script>
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                window.location.href = '/';
+            } else {
+                alert(data.message);
+            }
+        }
+    </script>
+</body>
+</html>
